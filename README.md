@@ -110,3 +110,13 @@ Berikut adalah panduan untuk menjalankan dan menguji API.
         ```bash
         curl -X PUT http://localhost:5000/profile -H "Authorization: Bearer %TOKEN%" -H "Content-Type: application/json" -d "{\"name\":\"osama bin laden\"}"
         ```
+
+## 5. Kasus Uji Minimal (Checklist)
+
+- [x] Login sukses mengembalikan `access_token` valid (de-code JWT cek `sub`, `email`, `exp`).
+- [x] `/items` dapat diakses tanpa header Authorization.
+- [x] `/profile` menolak akses tanpa/invalid/expired token (401).
+- [x] `/profile` berhasil update profil milik user sesuai klaim token (200).
+- [x] Semua respons berbentuk JSON, status code tepat, error message jelas.
+- [x] Secret tidak hardcode di kode (gunakan `.env`).
+- [x] README berisi perintah run & contoh cURL/Postman.

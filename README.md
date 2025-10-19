@@ -1,72 +1,112 @@
-README.md berisi:
-1. Cara setup environment & menjalankan server.
-2. Variabel env yang diperlukan.
-3. Daftar endpoint + skema request/response.
-4. Contoh cURL
+# Dokumentasi API Tugas 1
 
-1. Cara setup environment & menjalankan server
-    1. python -m venv .venv
-    2. .venv\Scripts\activate
-    3. pip install -r requirements.txt
-    4. python app.py
+Berikut adalah panduan untuk menjalankan dan menguji API.
 
-2. Variabel env yang diperlukan
-    1. buat file baru dengan nama .env
-    2. salin isi file .env.example dan paste ke .env
-    3. ubah JWT_SECRET sesuai keinginan
-    4. sesuaikan port
+## 1. Cara Setup Environment & Menjalankan Server
 
-3. Daftar endpoint + skema request/response
-    1. POST /auth/login
+1.  Buat *virtual environment* baru:
+    ```bash
+    python -m venv .venv
+    ```
+2.  Aktifkan *virtual environment* (untuk Windows):
+    ```bash
+    .\.venv\Scripts\activate
+    ```
+3.  Install semua *library* yang dibutuhkan:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  Jalankan server aplikasi:
+    ```bash
+    python app.py
+    ```
+
+## 2. Variabel Environment yang Diperlukan
+
+1.  Buat file baru di folder utama dengan nama `.env`.
+2.  Salin isi dari file `.env.example` ke dalam `.env`.
+3.  Ubah nilai `JWT_SECRET` dengan kunci rahasia pilihan Anda.
+4.  Sesuaikan `PORT` jika diperlukan (standarnya adalah `5000`).
+
+## 3. Daftar Endpoint + Skema Request/Response
+
+### 1. POST /auth/login
+
+* **Request Body**:
+    ```json
+    {
+      "email": "string",
+      "password": "string"
+    }
+    ```
+* **Response (Sukses)**:
+    ```json
+    {
+      "access_token": "<jwt_token>"
+    }
+    ```
+
+### 2. GET /items
+
+* **Response (Sukses)**:
+    ```json
+    {
+      "items": [
         {
-          "email": "string",
-          "password": "string"
-        }
-
+          "id": 1,
+          "nama": "lemari",
+          "harga": 1000
+        },
         {
-          "access_token": "<jwt_token>"
-        }
-
-    2. GET /items
+          "id": 2,
+          "nama": "meja",
+          "harga": 2000
+        },
         {
-          "items": [
-            {
-              "harga": 1000,
-              "id": 1,
-              "nama": "lemari"
-            },
-            {
-              "harga": 2000,
-              "id": 2,
-              "nama": "meja"
-            },
-            {
-              "harga": 3000,
-              "id": 3,
-              "nama": "pesawat"
-            }
-          ]
+          "id": 3,
+          "nama": "pesawat",
+          "harga": 3000
         }
+      ]
+    }
+    ```
 
-    3. PUT /profile
-        {
-          "name": "string",
-          "email": "string"
-        }
+### 3. PUT /profile
 
-        {
-          "message": "Profil berhasil diperbarui",
-          "profile": {
-          "name": "nama baru",
-          "email": "email baru"
-          }
-        }
+* **Request Body**:
+    ```json
+    {
+      "name": "string",
+      "email": "string"
+    }
+    ```
+* **Response (Sukses)**:
+    ```json
+    {
+      "message": "Profil berhasil diperbarui",
+      "profile": {
+        "name": "nama baru",
+        "email": "email baru"
+      }
+    }
+    ```
 
-4. Contoh cURL
-    1. Login untuk mendapatkan token:
+## 4. Contoh cURL (Windows)
+
+1.  **Login untuk mendapatkan token**:
+    ```bash
     curl -X POST http://localhost:5000/auth/login -H "Content-Type: application/json" -d "{\"email\":\"twin@towers.com\",\"password\":\"takbir\"}"
-    2. Akses items tanpa token:
+    ```
+2.  **Akses items tanpa token**:
+    ```bash
     curl http://localhost:5000/items
-    3. Akses profile:
-    set TOKEN=...
-    curl -X PUT http://localhost:5000/profile -H "Authorization: Bearer %Token%" -H "Content-Type: application/json" -d "{\"name\":\"osama bin laden\"}"
+    ```
+3.  **Akses profile (setelah menyimpan token)**:
+    * Pertama, simpan token Anda:
+        ```bash
+        set TOKEN=<TOKEN_ANDA>
+        ```
+    * Kemudian, jalankan perintah ini:
+        ```bash
+        curl -X PUT http://localhost:5000/profile -H "Authorization: Bearer %TOKEN%" -H "Content-Type: application/json" -d "{\"name\":\"osama bin laden\"}"
+        ```
